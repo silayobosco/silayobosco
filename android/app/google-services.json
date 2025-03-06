@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "157804352950",
+    "project_id": "bodaboda-b5aa8",
+    "storage_bucket": "bodaboda-b5aa8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157804352950:android:41418ae10cdc2189031d17",
+        "android_client_info": {
+          "package_name": "com.bosco.bodaboda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMvL9o7v_Je-RP-LutapvT0FDwxVQU-nw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
