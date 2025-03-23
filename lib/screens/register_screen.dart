@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../utils/validation.dart';
-import '../services/auth_verification.dart';
+import '../utils/auth_verification.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

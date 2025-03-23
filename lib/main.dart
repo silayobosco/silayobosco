@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart'; // Import provider
+import 'utils/app_theme.dart'; // Import AppThemes and ThemeProvider
 import '../screens/additional_info_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
@@ -14,7 +16,16 @@ import 'firebase_options.dart'; // Ensure this exists
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+
+  final themeProvider = ThemeProvider();
+  await themeProvider.loadThemeMode();
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => themeProvider,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,19 +33,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Boda Boda App',
-      home: const AuthWrapper(), // ✅ Check user session here
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/register': (context) => const RegisterScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/additional_info': (context) {
-          final user = ModalRoute.of(context)!.settings.arguments as User;
-          return AdditionalInfoScreen(user: user);
-        },
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Boda Boda App',
+          theme: AppThemes.lightTheme,
+          darkTheme: AppThemes.darkTheme,
+          themeMode: themeProvider.themeMode,
+          home: const AuthWrapper(), // ✅ Check user session here
+          initialRoute: '/login',
+          routes: {
+            '/login': (context) => const LoginScreen(),
+            '/register': (context) => const RegisterScreen(),
+            '/home': (context) => const HomeScreen(),
+            '/additional_info': (context) {
+              final user = ModalRoute.of(context)!.settings.arguments as User;
+              return AdditionalInfoScreen(user: user);
+            },
+          },
+        );
       },
     );
   }
@@ -59,11 +77,10 @@ class _AuthWrapperState extends State<AuthWrapper> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      DocumentSnapshot userDoc =
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(user.uid)
-              .get();
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.uid)
+          .get();
 
       if (userDoc.exists) {
         String role = userDoc.get("role");

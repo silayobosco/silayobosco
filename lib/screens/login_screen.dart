@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../services/auth_service.dart';
+import '../utils/auth_service.dart';
 import '../screens/additional_info_screen.dart';
 import '../screens/home_screen.dart';
 import '../utils/validation.dart';
-import '../ui/entry_field.dart';
-import '../ui/button.dart';
+import '../widgets/entry_field.dart';
+import '../widgets/button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
